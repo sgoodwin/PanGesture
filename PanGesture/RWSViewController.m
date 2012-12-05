@@ -15,17 +15,17 @@
 
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
     [panGesture addTarget:self action:@selector(gestureDidTranslate:)];
-    [self.label addGestureRecognizer:panGesture];
+    [self.movingView addGestureRecognizer:panGesture];
 }
 
 - (void)gestureDidTranslate:(UIPanGestureRecognizer *)panGesture
 {
     if([panGesture state] == UIGestureRecognizerStateBegan){
-        self.originalPoint = self.label.center;
+        self.originalPoint = self.movingView.center;
     }
 
     CGPoint translation = [panGesture translationInView:self.view];
-    self.label.center = CGPointMake(self.originalPoint.x+translation.x, self.originalPoint.y+translation.y);
+    self.movingView.center = CGPointMake(self.originalPoint.x+translation.x, self.originalPoint.y+translation.y);
     self.label.text = NSStringFromCGPoint([panGesture velocityInView:self.view]);
 }
 
