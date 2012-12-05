@@ -3,27 +3,30 @@
 //  PanGesture
 //
 //  Created by Samuel Goodwin on 12/5/12.
-//  Copyright (c) 2012 Roundwall Software. All rights reserved.
 //
 
 #import "RWSViewController.h"
-
-@interface RWSViewController ()
-
-@end
 
 @implementation RWSViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] init];
+    [panGesture addTarget:self action:@selector(gestureDidTranslate:)];
+    [self.label addGestureRecognizer:panGesture];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)gestureDidTranslate:(UIPanGestureRecognizer *)panGesture
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if([panGesture state] == UIGestureRecognizerStateBegan){
+        self.originalPoint = self.label.center;
+    }
+
+    CGPoint translation = [panGesture translationInView:self.view];
+    self.label.center = CGPointMake(self.originalPoint.x+translation.x, self.originalPoint.y+translation.y);
+    self.label.text = NSStringFromCGPoint([panGesture velocityInView:self.view]);
 }
 
 @end
